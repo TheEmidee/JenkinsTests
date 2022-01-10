@@ -7,29 +7,34 @@ import org.emidee.jenkins.Environment
 
 node('UE4') {
     initializeEnvironment( this, "Tests" )
+    skipDefaultCheckout()
 
-    def deployment_environment = Environment.instance.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment
+    ws( env.WORKSPACE ) {
+        checkout scm
 
-    if ( deployment_environment == DeploymentEnvironment.Development ) {
-        echo "Development"
-        touch file: 'version.txt', timestamp: 0
+        def deployment_environment = Environment.instance.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment
 
-        def git_branch = "develop"
-        def origin_str = "origin/"
+        if ( deployment_environment == DeploymentEnvironment.Development ) {
+            echo "Development"
+            touch file: 'version.txt', timestamp: 0
 
-        if ( git_branch.startsWith( origin_str ) ) {
-            git_branch = git_branch.substring( origin_str.length() )
+            def git_branch = "develop"
+            def origin_str = "origin/"
+
+            if ( git_branch.startsWith( origin_str ) ) {
+                git_branch = git_branch.substring( origin_str.length() )
+            }
+
+            bat "git switch -C ${git_branch} HEAD"
+            bat "git config user.email jenkins@fishingcactus.com"
+            bat "git config user.name Jenkins"
+            bat "git commit -am \"Update version\" -n"
+
+            sshagent( [ "JenkinsSwarms" ] ) {
+                bat "git push --set-upstream origin ${env.GIT_BRANCH}"
+            }
+        } else {
+            echo "NOT Development"
         }
-
-        bat "git switch -C ${git_branch} HEAD"
-        bat "git config user.email jenkins@fishingcactus.com"
-        bat "git config user.name Jenkins"
-        bat "git commit -am \"Update version\" -n"
-
-        sshagent( [ "JenkinsSwarms" ] ) {
-            bat "git push --set-upstream origin ${env.GIT_BRANCH}"
-        }
-    } else {
-        echo "NOT Development"
     }
 }
