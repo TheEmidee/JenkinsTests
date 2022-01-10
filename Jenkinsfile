@@ -27,6 +27,12 @@ node('UE4') {
             echo GIT_AUTHOR_EMAIL
 
             echo "Development"
+
+            if ( GIT_COMMIT_MSG.contains( "[Jenkins]" ) ) {
+                currentBuild.result = "NOT_BUILT"
+                exit
+            }
+
             touch file: 'version.txt', timestamp: 0
 
             def git_branch = "develop"
