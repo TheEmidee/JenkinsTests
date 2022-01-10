@@ -32,7 +32,7 @@ node('UE4') {
             bat "git commit -am \"Update version\" -n"
 
             sshagent( [ "JenkinsSwarms" ] ) {
-                bat "git push --set-upstream origin ${env.GIT_BRANCH}"
+                bat "git push --set-upstream origin develop"
             }
         } else {
             echo "NOT Development"
