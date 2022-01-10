@@ -49,7 +49,7 @@ node('UE4') {
             bat "git commit -am \"[Jenkins] Update version\" -n"
 
             sshagent( [ "JenkinsTestsDeployKey" ] ) {
-                //bat "git push --set-upstream origin develop"
+                bat "git push --set-upstream origin develop"
             }
         } else {
             echo "NOT Development"
