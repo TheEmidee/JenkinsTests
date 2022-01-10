@@ -15,6 +15,10 @@ node('UE4') {
         def deployment_environment = Environment.instance.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment
 
         if ( deployment_environment == DeploymentEnvironment.Development ) {
+            def GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+
+            echo GIT_COMMIT_MSG
+
             echo "Development"
             touch file: 'version.txt', timestamp: 0
 
@@ -29,10 +33,10 @@ node('UE4') {
             bat "git config user.email jenkins@fishingcactus.com"
             bat "git config user.name Jenkins"
             bat "git add -A"
-            bat "git commit -am \"Update version\" -n"
+            bat "git commit -am \"[Jenkins] Update version\" -n"
 
             sshagent( [ "JenkinsTestsDeployKey" ] ) {
-                bat "git push --set-upstream origin develop"
+                //bat "git push --set-upstream origin develop"
             }
         } else {
             echo "NOT Development"
