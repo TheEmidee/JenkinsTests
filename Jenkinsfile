@@ -16,8 +16,10 @@ node('UE4') {
 
         if ( deployment_environment == DeploymentEnvironment.Development ) {
             def GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-
+            def GIT_AUTHOR = sh (script: 'git log -1 --pretty=%cn ${GIT_COMMIT}', returnStdout: true).trim()
+            
             echo GIT_COMMIT_MSG
+            echo GIT_AUTHOR
 
             echo "Development"
             touch file: 'version.txt', timestamp: 0
