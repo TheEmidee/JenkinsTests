@@ -17,9 +17,14 @@ node('UE4') {
         if ( deployment_environment == DeploymentEnvironment.Development ) {
             def GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
             def GIT_AUTHOR = sh (script: 'git log -1 --pretty=%cn ${GIT_COMMIT}', returnStdout: true).trim()
-            
+            def GIT_AUTHOR_EMAIL = bat (
+                script: "git --no-pager show -s --format=%%ae",
+                  returnStdout: true
+              ).split('\r\n')[2].trim()
+
             echo GIT_COMMIT_MSG
             echo GIT_AUTHOR
+            echo GIT_AUTHOR_EMAIL
 
             echo "Development"
             touch file: 'version.txt', timestamp: 0
