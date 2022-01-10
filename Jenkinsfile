@@ -28,7 +28,10 @@ node('UE4') {
 
             echo "Development"
 
-            if ( GIT_COMMIT_MSG.contains( "[Jenkins]" ) ) {
+            def IsManual = currentBuild.rawBuild.getCauses()[0].toString().contains('UserIdCause');
+            def IsJenkins = GIT_COMMIT_MSG.contains( "[Jenkins]" )
+
+            if ( IsJenkins && !IsManual ) {
                 currentBuild.result = "NOT_BUILT"
                 return
             }
