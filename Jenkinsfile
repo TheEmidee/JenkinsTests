@@ -5,7 +5,7 @@
 import org.emidee.jenkins.DeploymentEnvironment
 import org.emidee.jenkins.Environment
 
-node('UE4') {
+node('builder6-tr') {
     initializeEnvironment( this, "Tests" )
     skipDefaultCheckout()
 
