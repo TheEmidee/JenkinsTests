@@ -35,10 +35,9 @@ node('UE4') {
 
             def IsJenkins = GIT_COMMIT_MSG.contains( "[Jenkins]" )
 
-            echo IsManual
             echo IsJenkins
 
-            if ( IsJenkins && !IsManual ) {
+            if ( IsJenkins ) {
                 currentBuild.result = "NOT_BUILT"
                 return
             }
