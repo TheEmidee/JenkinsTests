@@ -33,7 +33,7 @@ node('UE4') {
                 exit
             }
 
-            touch file: 'version.txt', timestamp: 0
+            writeFile file: 'version.txt', text: "$BUILD_NUMBER"
 
             def git_branch = "develop"
             def origin_str = "origin/"
