@@ -28,7 +28,11 @@ node('UE4') {
 
             echo "Development"
 
-            def IsManual = currentBuild.rawBuild.getCauses()[0].toString().contains('UserIdCause');
+            //def IsManual = currentBuild.rawBuild.getCauses()[0].toString().contains('UserIdCause');
+            echo "${currentBuild.buildCauses}" // same as currentBuild.getBuildCauses()
+            echo "${currentBuild.getBuildCauses('hudson.model.Cause$UserCause')}"
+            echo "${currentBuild.getBuildCauses('hudson.triggers.TimerTrigger$TimerTriggerCause')}"
+
             def IsJenkins = GIT_COMMIT_MSG.contains( "[Jenkins]" )
 
             echo IsManual
