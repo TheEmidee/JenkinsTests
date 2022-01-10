@@ -55,7 +55,7 @@ def reallyDelete = false;
 def job = Jenkins.instance.getItemByFullName(jobName);
 println("Job: ${job.fullName}");
 
-def build = job.getBuildByNumber(env.BUILD_NUMBER);
+def build = job.getBuildByNumber( env.BUILD_NUMBER.toInteger() );
 
 println("Deleting ${build}");
 build.delete();
