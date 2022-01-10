@@ -28,6 +28,7 @@ node('UE4') {
             bat "git switch -C ${git_branch} HEAD"
             bat "git config user.email jenkins@fishingcactus.com"
             bat "git config user.name Jenkins"
+            bat "git add -A"
             bat "git commit -am \"Update version\" -n"
 
             sshagent( [ "JenkinsSwarms" ] ) {
