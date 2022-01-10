@@ -55,16 +55,10 @@ def reallyDelete = false;
 def job = Jenkins.instance.getItemByFullName(jobName);
 println("Job: ${job.fullName}");
 
-def builds = job.getBuilds(rs);
-println("Found ${builds.size()} builds");
-builds.each{ b-> 
-  if (reallyDelete) {
-    println("Deleting ${b}");
-    b.delete();
-  } else {
-    println("Found match ${b}");
-  }
-}
+def build = job.getBuildByNumber(env.BUILD_NUMBER);
+
+println("Deleting ${build}");
+build.delete();
                 return
             }
 
