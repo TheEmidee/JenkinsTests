@@ -30,7 +30,7 @@ node('UE4') {
 
             if ( GIT_COMMIT_MSG.contains( "[Jenkins]" ) ) {
                 currentBuild.result = "NOT_BUILT"
-                exit
+                return
             }
 
             writeFile file: 'version.txt', text: "$BUILD_NUMBER"
