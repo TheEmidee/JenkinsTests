@@ -28,7 +28,7 @@ node('UE4') {
 
             echo "Development"
 
-            def buildCause = currentBuild.buildCauses.shortDescription
+            def buildCause = currentBuild.buildCauses.shortDescription[ 0 ]
 
             //def IsManual = currentBuild.rawBuild.getCauses()[0].toString().contains('UserIdCause');
             echo "${currentBuild.buildCauses}" // same as currentBuild.getBuildCauses()
