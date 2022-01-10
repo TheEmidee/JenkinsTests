@@ -14,7 +14,7 @@ node('UE4') {
         echo "Development"
         touch file: 'version.txt', timestamp: 0
 
-        def git_branch = env.GIT_BRANCH
+        def git_branch = "develop"
         def origin_str = "origin/"
 
         if ( git_branch.startsWith( origin_str ) ) {
