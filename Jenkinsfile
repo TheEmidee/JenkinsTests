@@ -28,16 +28,19 @@ node('UE4') {
 
             echo "Development"
 
+            def buildCause = currentBuild.buildCauses.shortDescription
+
             //def IsManual = currentBuild.rawBuild.getCauses()[0].toString().contains('UserIdCause');
             echo "${currentBuild.buildCauses}" // same as currentBuild.getBuildCauses()
             echo "${currentBuild.getBuildCauses('hudson.model.Cause$UserCause')}"
             echo "${currentBuild.getBuildCauses('hudson.triggers.TimerTrigger$TimerTriggerCause')}"
 
             def IsJenkins = GIT_COMMIT_MSG.contains( "[Jenkins]" )
+            def IsManual = buildCause.startsWith( "Started by user" )
 
             echo IsJenkins
 
-            if ( IsJenkins ) {
+            if ( IsJenkins && !IsManual ) {
                 currentBuild.result = "NOT_BUILT"
                 return
             }
