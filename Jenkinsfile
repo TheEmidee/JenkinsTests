@@ -41,13 +41,17 @@ node('UE4') {
             echo "IsJenkins : ${IsJenkins}"
             echo "IsManual : ${IsManual}"
 
-            if ( IsJenkins && !IsManual ) {
+            if ( IsJenkins || IsManual ) {
                 def jobName = 'JenkinsTests'
                 def job = Jenkins.instance.getItemByFullName(jobName);
                 println("Job: ${job.fullName}");
 
-                def last_job_num = job.getLastBuild().getNumber()
-                def build = job.getBuildByNumber( last_job_num );
+                echo env.BUILD_NUMBER
+
+                def buildNumber = job.lastSuccessfulBuild.number + 1
+                println("buildNumber ${buildNumber}");
+
+                def build = job.getBuildByNumber( buildNumber );
 
                 println("Deleting ${build}");
                 build.delete();
