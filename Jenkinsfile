@@ -42,17 +42,17 @@ node('UE4') {
             echo "IsManual : ${IsManual}"
 
             if ( IsJenkins && !IsManual ) {
-                currentBuild.result = "NOT_BUILT"
-
                 def jobName = 'JenkinsTests'
                 def job = Jenkins.instance.getItemByFullName(jobName);
                 println("Job: ${job.fullName}");
 
-                def last_job_num = job_data.getLastBuild().getNumber()
+                def last_job_num = job.getLastBuild().getNumber()
                 def build = job.getBuildByNumber( last_job_num );
 
                 println("Deleting ${build}");
                 build.delete();
+
+                currentBuild.result = "NOT_BUILT"
                 return
             }
 
