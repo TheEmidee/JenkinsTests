@@ -44,21 +44,15 @@ node('UE4') {
             if ( IsJenkins && !IsManual ) {
                 currentBuild.result = "NOT_BUILT"
 
-                // Jenkins job
-def jobName = 'JenkinsTests'
-// Range of builds to delete
-def rs = Fingerprint.RangeSet.fromString("${env.BUILD_NUMBER}", false);
-// Set to true to actually delete. Use false to test the script.
-def reallyDelete = false;
+                def jobName = 'JenkinsTests'
+                def job = Jenkins.instance.getItemByFullName(jobName);
+                println("Job: ${job.fullName}");
 
-// ----------------------------------
-def job = Jenkins.instance.getItemByFullName(jobName);
-println("Job: ${job.fullName}");
+                def last_job_num = job_data.getLastBuild().getNumber()
+                def build = job.getBuildByNumber( last_job_num );
 
-def build = job.getBuildByNumber( env.BUILD_NUMBER.toInteger() );
-
-println("Deleting ${build}");
-build.delete();
+                println("Deleting ${build}");
+                build.delete();
                 return
             }
 
